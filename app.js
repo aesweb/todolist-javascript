@@ -2,10 +2,13 @@ let addBtn = document.querySelector('#liveToastBtn');
 // let removeItem = document.querySelector('#RemoveItem');
 let divList = document.querySelector('#divList');
 let addInput = document.querySelector('#task');
-let myStorage = localStorage.getItem('task');
+
 function addItem() {
   // add item start here
-  if (addInput.value !== '') {
+  if (addInput.value == '' || addInput.value == ' ') {
+    $('.error').toast('show');
+    addInput.value = '';
+  } else {
     const ul = divList.querySelector('ul');
     const li = document.createElement('li');
     const span = document.createElement('span');
@@ -20,18 +23,19 @@ function addItem() {
       'justify-content-between',
       'align-items-center'
     );
-    localStorage.setItem('task', ul.outerHTML);
+    localStorage.setItem(`item ${localStorage.length + 1}`, li.innerText); // save item to local storage
+    $('.success').toast('show');
     // add item end here
     //  remove items code space
     const close = document.querySelectorAll('.fa');
     for (let i = 0; i < close.length; i++) {
       close[i].addEventListener('click', () => {
         close[i].parentElement.remove();
+        // localStorage.removeItem(`item ${localStorage.length - 1}`);
       });
     }
+
     //  remove items code space end
-  } else {
-    $('.error').toast('show');
   }
 }
 // check list item start here
